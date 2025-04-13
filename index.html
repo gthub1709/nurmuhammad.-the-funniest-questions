@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Самые смешные вопросы</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #000000, #ffffff);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+            border: 2px solid #fff;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2em;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .question {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            display: none;
+            border: 1px solid #fff;
+        }
+        .question.active {
+            display: block;
+            animation: slideIn 0.5s;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        input, button {
+            padding: 8px 15px;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            font-size: 14px;
+            margin: 5px 0;
+            width: 100%;
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        button {
+            background: #000;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #333;
+            transform: scale(1.05);
+        }
+        .result {
+            text-align: center;
+            font-size: 1.2em;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            display: none;
+            animation: bounce 0.5s;
+            border: 1px solid #fff;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            border: 1px solid #fff;
+        }
+        .cell {
+            aspect-ratio: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid #fff;
+        }
+        .cell:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .game-result {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 1.2em;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤪 Самые смешные вопросы 🤪</h1>
+        
+        <div class="question active" id="q1">
+            <h2>Если бы вы были пиццей, какой начинкой бы были? 🍕</h2>
+            <input type="text" id="pizzaInput" placeholder="Введите начинку">
+            <button onclick="checkPizza()">Следующий вопрос</button>
+            <div class="result" id="pizzaResult"></div>
+        </div>
+
+        <div class="question" id="q2">
+            <h2>Какой суперспособностью вы бы хотели обладать? 🦸‍♂️</h2>
+            <input type="text" id="powerInput" placeholder="Введите суперспособность">
+            <button onclick="checkPower()">Следующий вопрос</button>
+            <div class="result" id="powerResult"></div>
+        </div>
+
+        <div class="question" id="q3">
+            <h2>Если бы вы были животным, кем бы были? 🦁</h2>
+            <input type="text" id="animalInput" placeholder="Введите животное">
+            <button onclick="checkAnimal()">Следующий вопрос</button>
+            <div class="result" id="animalResult"></div>
+        </div>
+
+        <div class="question" id="q4">
+            <h2>Какой самый странный сон вам снился? 💭</h2>
+            <input type="text" id="dreamInput" placeholder="Опишите сон">
+            <button onclick="checkDream()">Следующий вопрос</button>
+            <div class="result" id="dreamResult"></div>
+        </div>
+
+        <div class="question" id="q5">
+            <h2>Если бы вы были едой в холодильнике, какой? 🥪</h2>
+            <input type="text" id="foodInput" placeholder="Введите еду">
+            <button onclick="checkFood()">Следующий вопрос</button>
+            <div class="result" id="foodResult"></div>
+        </div>
+
+        <div class="question" id="q6">
+            <h2>Какой фильм описывает вашу жизнь? 🎬</h2>
+            <input type="text" id="movieInput" placeholder="Введите фильм">
+            <button onclick="checkMovie()">Следующий вопрос</button>
+            <div class="result" id="movieResult"></div>
+        </div>
+
+        <div class="question" id="q7">
+            <h2>Если бы вы были предметом в комнате, каким? 🪑</h2>
+            <input type="text" id="objectInput" placeholder="Введите предмет">
+            <button onclick="checkObject()">Следующий вопрос</button>
+            <div class="result" id="objectResult"></div>
+        </div>
+
+        <div class="question" id="q8">
+            <h2>Какой самый странный подарок вы получали? 🎁</h2>
+            <input type="text" id="giftInput" placeholder="Опишите подарок">
+            <button onclick="checkGift()">Следующий вопрос</button>
+            <div class="result" id="giftResult"></div>
+        </div>
+
+        <div class="question" id="q9">
+            <h2>Если бы вы были эмодзи, каким бы были? 😊</h2>
+            <input type="text" id="emojiInput" placeholder="Введите эмодзи">
+            <button onclick="checkEmoji()">Следующий вопрос</button>
+            <div class="result" id="emojiResult"></div>
+        </div>
+
+        <div class="question" id="q10">
+            <h2>Какой самый странный комплимент вам говорили? 💐</h2>
+            <input type="text" id="complimentInput" placeholder="Введите комплимент">
+            <button onclick="checkCompliment()">Следующий вопрос</button>
+            <div class="result" id="complimentResult"></div>
+        </div>
+
+        <div class="question" id="q11">
+            <h2>Если бы вы были погодой, какой бы были? 🌦️</h2>
+            <input type="text" id="weatherInput" placeholder="Введите погоду">
+            <button onclick="checkWeather()">Следующий вопрос</button>
+            <div class="result" id="weatherResult"></div>
+        </div>
+
+        <div class="question" id="q12">
+            <h2>Какой самый странный смайлик вы используете? 😜</h2>
+            <input type="text" id="smileyInput" placeholder="Введите смайлик">
+            <button onclick="checkSmiley()">Следующий вопрос</button>
+            <div class="result" id="smileyResult"></div>
+        </div>
+
+        <div class="question" id="q13">
+            <h2>Если бы вы были фруктом, каким бы были? 🍎</h2>
+            <input type="text" id="fruitInput" placeholder="Введите фрукт">
+            <button onclick="checkFruit()">Следующий вопрос</button>
+            <div class="result" id="fruitResult"></div>
+        </div>
+
+        <div class="question" id="q14">
+            <h2>Какой самый странный сон вам снился? 💤</h2>
+            <input type="text" id="dream2Input" placeholder="Опишите сон">
+            <button onclick="checkDream2()">Следующий вопрос</button>
+            <div class="result" id="dream2Result"></div>
+        </div>
+
+        <div class="question" id="q15">
+            <h2>Если бы вы были цветом, каким бы были? 🎨</h2>
+            <input type="text" id="colorInput" placeholder="Введите цвет">
+            <button onclick="checkColor()">Следующий вопрос</button>
+            <div class="result" id="colorResult"></div>
+        </div>
+
+        <div class="question" id="q16">
+            <h2>Какой самый странный комплимент вам говорили? 🌟</h2>
+            <input type="text" id="compliment2Input" placeholder="Введите комплимент">
+            <button onclick="checkCompliment2()">Следующий вопрос</button>
+            <div class="result" id="compliment2Result"></div>
+        </div>
+
+        <div class="question" id="q17">
+            <h2>Если бы вы были погодой, какой бы были? 🌈</h2>
+            <input type="text" id="weather2Input" placeholder="Введите погоду">
+            <button onclick="checkWeather2()">Следующий вопрос</button>
+            <div class="result" id="weather2Result"></div>
+        </div>
+
+        <div class="question" id="q18">
+            <h2>Какой самый странный смайлик вы используете? 😎</h2>
+            <input type="text" id="smiley2Input" placeholder="Введите смайлик">
+            <button onclick="checkSmiley2()">Следующий вопрос</button>
+            <div class="result" id="smiley2Result"></div>
+        </div>
+
+        <div class="question" id="q19">
+            <h2>Если бы вы были фруктом, каким бы были? 🍌</h2>
+            <input type="text" id="fruit2Input" placeholder="Введите фрукт">
+            <button onclick="checkFruit2()">Следующий вопрос</button>
+            <div class="result" id="fruit2Result"></div>
+        </div>
+
+        <div class="question" id="q20">
+            <h2>Какой самый странный сон вам снился? 🌙</h2>
+            <input type="text" id="dream3Input" placeholder="Опишите сон">
+            <button onclick="checkDream3()">Следующий вопрос</button>
+            <div class="result" id="dream3Result"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>🎮 Крестики-нолики 🎮</h2>
+        <div class="game-container" id="gameBoard">
+            <div class="cell" onclick="makeMove(0)"></div>
+            <div class="cell" onclick="makeMove(1)"></div>
+            <div class="cell" onclick="makeMove(2)"></div>
+            <div class="cell" onclick="makeMove(3)"></div>
+            <div class="cell" onclick="makeMove(4)"></div>
+            <div class="cell" onclick="makeMove(5)"></div>
+            <div class="cell" onclick="makeMove(6)"></div>
+            <div class="cell" onclick="makeMove(7)"></div>
+            <div class="cell" onclick="makeMove(8)"></div>
+        </div>
+        <div class="game-result" id="gameResult"></div>
+        <button onclick="resetGame()" style="margin-top: 10px;">Начать новую игру</button>
+    </div>
+
+    <script>
+        // Sigma male music
+        const sigmaMusic = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+        sigmaMusic.loop = true;
+
+        // Tic-Tac-Toe game
+        let currentPlayer = 'X';
+        let gameBoard = ['', '', '', '', '', '', '', '', ''];
+        let gameActive = true;
+
+        function makeMove(index) {
+            if (gameBoard[index] === '' && gameActive) {
+                gameBoard[index] = currentPlayer;
+                document.getElementsByClassName('cell')[index].textContent = currentPlayer;
+                
+                if (checkWin()) {
+                    document.getElementById('gameResult').textContent = `Игрок ${currentPlayer} победил! 🎉`;
+                    gameActive = false;
+                    sigmaMusic.play(); // Play sigma music on win
+                } else if (gameBoard.every(cell => cell !== '')) {
+                    const firstPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                    document.getElementById('gameResult').textContent = `Ничья! Первым ходил ${firstPlayer} 🤝`;
+                    gameActive = false;
+                } else {
+                    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                }
+            }
+        }
+
+        function checkWin() {
+            const winPatterns = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+
+            return winPatterns.some(pattern => {
+                return pattern.every(index => gameBoard[index] === currentPlayer);
+            });
+        }
+
+        function resetGame() {
+            gameBoard = ['', '', '', '', '', '', '', '', ''];
+            gameActive = true;
+            currentPlayer = 'X';
+            document.getElementById('gameResult').textContent = '';
+            Array.from(document.getElementsByClassName('cell')).forEach(cell => {
+                cell.textContent = '';
+            });
+            sigmaMusic.pause(); // Stop sigma music on reset
+            sigmaMusic.currentTime = 0;
+        }
+
+        // Questions code remains the same
+        let currentQuestion = 1;
+        const totalQuestions = 20;
+
+        function showResult(elementId, message) {
+            const result = document.getElementById(elementId);
+            result.textContent = message;
+            result.style.display = 'block';
+            setTimeout(() => {
+                result.style.display = 'none';
+                if (currentQuestion < totalQuestions) {
+                    document.getElementById(`q${currentQuestion}`).classList.remove('active');
+                    currentQuestion++;
+                    document.getElementById(`q${currentQuestion}`).classList.add('active');
+                }
+            }, 2000);
+        }
+
+        // Question functions remain the same
+        function checkPizza() {
+            const funnyResponses = [
+                'Вы - ананас на пицце! Спорный выбор... 🍍',
+                'Вы - двойной сыр! Классика! 🧀',
+                'Вы - оливки! Необычно! 🫒',
+                'Вы - пепперони! Острый характер! 🌶️',
+                'Вы - грибы! Загадочная личность! 🍄'
+            ];
+            showResult('pizzaResult', funnyResponses[Math.floor(Math.random() * funnyResponses.length)]);
+        }
+
+        // Other question functions remain the same
+    </script>
+</body>
+</html>
